@@ -16,6 +16,7 @@ type PersonType = {
       mass: string;
       height: string;
       gender: string;
+      homeworld: string;
     }
   ]
 }
