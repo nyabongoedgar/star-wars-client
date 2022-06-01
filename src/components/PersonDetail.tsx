@@ -56,6 +56,15 @@ const PersonDetail: React.FC<PersonType> = ({ person }) => {
               <h4>{item.gender}</h4>
             </DetailItem>
           </DetailRow>
+          <DetailRow>
+            <DetailItem>
+              <h4>Home world</h4>
+            </DetailItem>
+            <DetailItem>
+              <h4>{item.homeworld}</h4>
+            </DetailItem>
+          </DetailRow>
+          
         </PersonDetails>
       ))}
     </ContentSection>
