@@ -1,6 +1,6 @@
 import React from "react";
 import { parse } from "query-string";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useQuery, gql } from "@apollo/client";
 import { Layout, QueryResult } from "../components";
 import PersonDetail from "../components/PersonDetail";
@@ -30,19 +30,21 @@ export const GET_PERSON = gql`
 const Person = () => {
   const { search } = useLocation();
   const searchParams = parse(search);
-  const { search: searchName } = searchParams;
+  const { search: searchName, prev } = searchParams;
   const { loading, error, data } = useQuery(GET_PERSON, {
     variables: { name: searchName },
   });
 
 
+
   return (
     <Layout>
       <QueryResult error={error} loading={loading} data={data}>
+        <Link to={"/"} state={{ prev }}>Back</Link>
         {/* @ts-ignore */}
         <PersonDetail person={data?.person?.results} />
       </QueryResult>
-    </Layout>
+    </Layout >
   );
 
 };

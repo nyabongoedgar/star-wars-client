@@ -11,7 +11,14 @@ describe("People Page", () => {
   afterEach(cleanup);
   const cache = new InMemoryCache({ addTypename: false });
 
+
   it("renders people", async () => {
+    Object.defineProperty(window, 'performance', {
+      value: {
+        getEntriesByType: jest.fn().mockReturnValue([{ type: 'reload' }]),
+        measure: jest.fn(),
+      },
+    });
     const mocks = [
       {
         request: { query: PEOPLE, variables: { page: 1 } },

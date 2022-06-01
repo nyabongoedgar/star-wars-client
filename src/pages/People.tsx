@@ -1,8 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery, gql } from "@apollo/client";
 import styled from "@emotion/styled";
 import PersonCard from "../containers/PersonCard";
 import { Layout, QueryResult } from "../components";
+import { useEffect } from "react";
 
 /** PEOPLE gql query to retreive all PEOPLE */
 export const PEOPLE = gql`
@@ -33,11 +36,32 @@ type PersonCardPropTypes = {
   homeworlds: string;
 }
 
-const People = () => {
-  const [page, setPage] = useState<number>(1);
+type PeoplePropTypes = {
+  location?: any;
+}
+
+const People: React.FC<PeoplePropTypes> = (props) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  //@ts-ignore
+  let prev = location.state?.prev;
+  const [page, setPage] = useState<number>(prev ? parseInt(prev) : 1);
   const { loading, error, data } = useQuery(PEOPLE, {
     variables: { page }
   });
+
+  function replaceHistory() {
+    //@ts-ignore
+    navigate("", { state: { prev: null } });
+  }
+
+  useEffect(() => {
+    //@ts-ignore
+    if (window.performance.getEntriesByType("navigation")[0].type === "reload") {
+      replaceHistory()
+    }
+  }, []);
+
   return (
     <>
       <Layout grid>
